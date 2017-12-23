@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <% include ./partials/header %>
+        <title>Perpetue - Leave your message to the world.</title>
+        <link rel="stylesheet" href="css/posts.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/form.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/button.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/message.min.css" />
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script src="js/posts.js"></script>
+        <script type="text/javascript">
+            function onSubmit(token){
+                $("#sender").submit();
+            }
+        </script>
+    
+    </head>
+
+    <body>
+        <% dateOptions = {year: 'numeric', month: 'numeric', day:'numeric'}; %>
+
+        <div class="container">
+            <div class="wrapper">
+                <img id="logo" src="img/logo.png" alt="">
+                <form id="sender" class="ui form" action="/posts" method="POST"> 
+                    <div style="position: relative;">
+                        <textarea id="message" name="message" style="height: 50%; resize: none;" maxlength="100" placeholder="Your message"></textarea>
+                        <div id="charCounter">100</div>
+                    </div>
+                    <button
+                        id="btn_send"
+                        class="g-recaptcha ui grey button"
+                        data-badge="inline"
+                        data-sitekey="6LeQFT4UAAAAAFNTWgBKdCXXsQAzbwRH2A0mTeJV"
+                        data-callback="onSubmit">
+                        Send
+                    </button>
+                </form>
+                <div id="response"></div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="container posts">
+            <% posts.forEach(function(post){ %>
+                <div data-id="<%= post['_id'] %>" class="post">
+                    <div class="avatar">
+                        <img src="<%= post['avatar'] %>">
+                    </div>
+                    <div class="info">
+                        <p><strong><%= post["author"] %></strong> says:</p>
+                        <p><%= post["body"] %> </p>
+                        <div class="date"> <%= post["date"].getDate() + "-" + post["date"].getMonth() + "-" + post["date"].getFullYear(); %></div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <i id="returner" class="fa fa-arrow-up" aria-hidden="true"></i>
+
+<% include ./partials/footer %>
