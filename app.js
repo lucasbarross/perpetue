@@ -1,14 +1,18 @@
 var bodyParser  = require("body-parser")
-    mongoose    = require("mongoose")
-    randomName  = require("random-name"),
+    mongoose    = require("mongoose"),
     express     = require("express"),
-    Post        = require("./models/post");
+    config      = require("./config.js");
+    purgeDB     = require("./seeds.js");
 
-var postsRoutes = require("./routes/posts");
-var indexRoutes = require("./routes/index");
+var postsRoutes = require("./routes/posts"),
+    indexRoutes = require("./routes/index");
+    commentsRoutes = require("./routes/comments")
+    reportsRoutes = require("./routes/reports");
+
+mongoose.Promise = Promise;
 
 app = express();
-mongoose.connect("mongodb://localhost/perpetue", { useMongoClient: true });
+mongoose.connect(config.mongo.url, { useMongoClient: true }).catch((err) => console.log(err));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -16,17 +20,11 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(indexRoutes);
 app.use("/posts", postsRoutes);
+app.use("/posts", commentsRoutes);
+app.use("/posts", reportsRoutes);
 
-// var message = "aaaaaaaaaaaaaaaaa";
-// var genres = ["male", "female"];
-// var newPost = { 
-//                 avatar: "http://eightbitavatar.herokuapp.com/?id="+10002+"&s="+genres[0]+"&size=100",
-//                 author: randomName.first() + " " + randomName.last(),
-//                 body: message,
-//             }
-// Post.create(newPost)
-// .catch((err) => console.log(err));
-// app.listen(process.env.PORT, process.env.IP);
-app.listen(1002, 'localhost', function(){
+purgeDB();
+
+app.listen(1000, 'localhost', function(){
     console.log("connected");
 });

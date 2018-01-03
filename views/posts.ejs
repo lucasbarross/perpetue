@@ -1,21 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en-US">
     <head>
         <% include ./partials/header %>
         <title>Perpetue - Leave your message to the world.</title>
-        <link rel="stylesheet" href="css/posts.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/form.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/button.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/message.min.css" />
-        <script src='https://www.google.com/recaptcha/api.js'></script>
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
-        <script src="js/posts.js"></script>
-        <script type="text/javascript">
-            function onSubmit(token){
-                $("#sender").submit();
-            }
-        </script>
-    
+        <link rel="stylesheet" href="/css/posts.css">
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script>
+        <script src="/js/reporter.js"></script>
+        <script src="/js/Feedback.js"></script> 
+        <script src="/js/posts.js"></script>
+        <script src="/js/returner.js"></script>
+        <script src="/js/limiter.js"></script>
+        <script src="/js/toggle.js"></script>
     </head>
 
     <body>
@@ -23,7 +19,7 @@
 
         <div class="container">
             <div class="wrapper">
-                <img id="logo" src="img/logo.png" alt="">
+                <img id="logo" src="/img/logo.png" alt="">
                 <form id="sender" class="ui form" action="/posts" method="POST"> 
                     <div style="position: relative;">
                         <textarea id="message" name="message" style="height: 50%; resize: none;" maxlength="100" placeholder="Your message"></textarea>
@@ -31,10 +27,7 @@
                     </div>
                     <button
                         id="btn_send"
-                        class="g-recaptcha ui grey button"
-                        data-badge="inline"
-                        data-sitekey="6LeQFT4UAAAAAFNTWgBKdCXXsQAzbwRH2A0mTeJV"
-                        data-callback="onSubmit">
+                        class="g-recaptcha ui grey button">
                         Send
                     </button>
                 </form>
@@ -42,22 +35,38 @@
             </div>
         </div>
         <hr>
-
+        <form id="reporter" style="display:none;" action="" method="POST">
+            <button type="submit" id="captcha_report" style="display:none;"></button>
+        </form>
         <div class="container posts">
             <% posts.forEach(function(post){ %>
-                <div data-id="<%= post['_id'] %>" class="post">
+            <a href="/posts/<%=post['hashid']%>/comments" data-id="<%= post['hashid'] %>" class="post">
                     <div class="avatar">
                         <img src="<%= post['avatar'] %>">
                     </div>
                     <div class="info">
                         <p><strong><%= post["author"] %></strong> says:</p>
-                        <p><%= post["body"] %> </p>
-                        <div class="date"> <%= post["date"].getDate() + "-" + post["date"].getMonth() + "-" + post["date"].getFullYear(); %></div>
+                        <% if(post["reports"] < config.maxReports) { %>
+                            <p><%= post["body"] %> </p>
+                        <% } else { %>
+                            <button data-target="#<%=post['hashid']%>msg" type="button" class="ui button basic toggle ">Show hidden message</button>
+                            <p style="display:none;" id="<%=post['hashid']%>msg"><%= post["body"] %> </p>
+                     
+                        <% } %>
+                        <div class="date"> <%= post["date"].getDate() + "-" + (post["date"].getMonth() + 1) + "-" + post["date"].getFullYear(); %></div>
+                        <% if(!post['reported']) { %>
+                            <button data-action="/posts/<%= post['hashid'] %>/report" data-id="<%= post['hashid'] %>" id="report_btn" class="report report_btn">
+                                <i class="fa fa-exclamation" aria-hidden="true"></i>
+                            </button>
+                        <% } %>
                     </div>
-                </div>
+            </a>
             <% }) %>
         </div>
-
+        <div class="container">
+            <div class="ui active inline loader"></div>
+        </div>
         <i id="returner" class="fa fa-arrow-up" aria-hidden="true"></i>
 
+        <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
 <% include ./partials/footer %>

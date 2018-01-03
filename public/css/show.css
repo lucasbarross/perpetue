@@ -1,0 +1,62 @@
+.comment{
+    display: flex;
+    margin-bottom: 20px;
+    width: 97%;
+}
+
+.wrapper{
+    width: 100%;
+}
+
+#sender{
+    width: 100%;
+}
+
+.principal{
+    border: 2px dotted #29d783;
+}
+
+.menu{
+    display: flex;
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    font-family: 'Raleway', sans-serif;
+}
+.menu>a{
+    padding: 10px;
+}
+.menu>a:hover{
+    background-color: #29d783;
+    color: white;
+}
+
+.menu>button{
+    border: none;
+    font-size: 15px;
+    background-color: white;
+    font-family: 'Raleway', sans-serif;
+    padding: 10px;
+}
+
+.menu>button:hover{
+    background-color: #29d783;
+    color: white;
+    cursor: pointer;
+}
+.row{
+    flex-direction: row;
+}
+
+@media screen and (min-width: 1000px) {
+    .wrapper{
+        width: 30%;
+    }
+    .menu{
+        text-align: left;
+    }
+    .comment{
+        width: 50%;
+        height: 104px;
+    }   
+}

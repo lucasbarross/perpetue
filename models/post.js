@@ -4,9 +4,12 @@ var postSchema = new mongoose.Schema({
     avatar: String,
     author: String,
     body: String,
-    votes: {type: Number, default: 0},
     reports: {type: Number, default: 0},
-    date: {type: Date, default: Date.now}
+    date: {type: Date, default: Date.now},
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }]
 });
 
 module.exports = mongoose.model("Post", postSchema);

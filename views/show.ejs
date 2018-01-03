@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <% include ./partials/header %>
+        <title>Perpetue - Leave your message to the world.</title>
+        <link rel="stylesheet" href="/css/posts.css">
+        <link rel="stylesheet" href="/css/show.css">
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script src="/js/reporter.js"></script>
+        <script src="/js/Feedback.js"></script> 
+        <script src="/js/show.js"></script> 
+        <script src="/js/returner.js"></script>
+        <script src="/js/limiter.js"></script>
+        <script src="/js/toggle.js"></script>
+        <script type="text/javascript">
+            function onSubmit(token){
+                $("#sender").submit();
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="wrapper">
+                <form id="sender" class="ui form" action="/posts/<%= post['hashid'] %>/comments" method="POST"> 
+                    <div style="position: relative;">
+                        <textarea id="message" name="message" style="height: 50%; resize: none;" maxlength="100" placeholder="Your comment"></textarea>
+                        <div id="charCounter">100</div>
+                    </div>
+                    <button
+                        id="btn_send"
+                        class="g-recaptcha ui grey button">
+                        Send
+                    </button>
+                </form>
+                <div id="response"></div>
+            </div>
+        </div>
+        <div class="container">
+                <div data-id="<%= post['hashid'] %>" class="comment principal">
+                    <div class="avatar">
+                        <img src="<%= post['avatar'] %>">
+                    </div>
+                    <div class="info">
+                        <p><strong><%= post["author"] %></strong> says:</p>
+                        <p><%= post["body"] %> </p>
+                        <div class="date"> <%= post["date"].getDate() + "-" + (post["date"].getMonth()+1) + "-" + post["date"].getFullYear(); %></div>
+                    </div>
+                </div>
+        </div>
+         <div class="menu">
+            <a style="margin-right: 10px;"href="/posts">Home</i></a>
+            <% if (!post["reported"]) { %>
+                    <button
+                        data-action="/posts/<%= post['hashid'] %>/report" data-id="<%= post['hashid'] %>" id="report_btn" class="report_btn">
+                        Report
+                    </button>
+                </form>
+            <% } %>
+        </div>
+        <hr>
+        <form id="reporter" style="display:none;" action="" method="POST">
+            <button type="submit" id="captcha_report" style="display:none;"></button>
+        </form>
+        <div class="container posts">
+            <% for(let i = post.comments.length-1; i >= 0; i--) { %>
+                <% var comment = post.comments[i]; %>
+                <div data-id="<%= comment['hashid'] %>" class="comment">
+                    <div class="avatar">
+                        <img src="<%= comment['avatar'] %>">
+                    </div>
+                    <div class="info">
+                        <p><strong><%= comment["author"] %></strong> responds:</p>
+                         <% if(comment["reports"] < config.maxReports) { %>
+                            <p><%= comment["body"] %> </p>
+                        <% } else { %>
+                            <button data-target="#<%=comment['hashid']%>msg" type="button" class="ui button toggle basic">Show hidden message</button>
+                            <p style="display:none;" id="<%=comment['hashid']%>msg"><%= comment["body"] %> </p>
+                        <% } %>
+                        <div class="date"> <%= comment["date"].getDate() + "-" + (comment["date"].getMonth() + 1) + "-" + comment["date"].getFullYear(); %></div>
+                        <% if(!comment['reported']) { %>
+                            <button data-action="/posts/<%= comment['hashid'] %>/comment/report" data-id="<%= comment['hashid'] %>" id="report_btn" class="report report_btn">
+                                <i class="fa fa-exclamation" aria-hidden="true"></i>
+                            </button>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+        <i id="returner" class="fa fa-arrow-up" aria-hidden="true"></i>
+        
+        <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
+<% include ./partials/footer %>

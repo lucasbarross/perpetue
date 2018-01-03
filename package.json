@@ -17,11 +17,14 @@
   },
   "homepage": "https://github.com/lucasbarross/perpetue#readme",
   "dependencies": {
+    "alertify.js": "^1.0.12",
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "hashids": "^1.1.4",
     "mongoose": "^4.13.4",
-    "random-name": "^0.1.2",
+    "node-random-name": "^1.0.1",
     "request": "^2.83.0"
   }
 }
