@@ -63,9 +63,13 @@ module.exports = {
                 },
     createPost: function (req,res){
                     let captchaResponse = req.body['g-recaptcha-response'];
-                    let ip = req.connection.remoteAddress;
-                    console.log(req.connection.remoteAddress);
-                    console.log(req.ip);
+                    let ip = req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress ||
+                    req.socket.remoteAddress ||
+                    req.connection.socket.remoteAddress;
+
+                    console.log(ip);
+                    
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})
                     }
