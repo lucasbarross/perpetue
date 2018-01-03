@@ -23,8 +23,6 @@ app.use("/posts", postsRoutes);
 app.use("/posts", commentsRoutes);
 app.use("/posts", reportsRoutes);
 
-purgeDB();
-
 app.listen(1000, 'localhost', function(){
     console.log("connected");
 });
