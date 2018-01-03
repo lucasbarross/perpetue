@@ -23,6 +23,6 @@ app.use("/posts", postsRoutes);
 app.use("/posts", commentsRoutes);
 app.use("/posts", reportsRoutes);
 
-app.listen(1000, 'localhost', function(){
+app.listen(process.env.PORT || 1000, function(){
     console.log("connected");
 });
