@@ -51,7 +51,6 @@
                         <% } else { %>
                             <button data-target="#<%=post['hashid']%>msg" type="button" class="ui button basic toggle ">Show hidden message</button>
                             <p style="display:none;" id="<%=post['hashid']%>msg"><%= post["body"] %> </p>
-                     
                         <% } %>
                         <div class="date"> <%= post["date"].getDate() + "-" + (post["date"].getMonth() + 1) + "-" + post["date"].getFullYear(); %></div>
                         <% if(!post['reported']) { %>
