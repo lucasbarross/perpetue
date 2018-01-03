@@ -64,7 +64,8 @@ module.exports = {
     createPost: function (req,res){
                     let captchaResponse = req.body['g-recaptcha-response'];
                     let ip = req.connection.remoteAddress;
-
+                    console.log(req.connection.remoteAddress);
+                    console.log(req.ip);
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})
                     }
