@@ -2,7 +2,7 @@ var bodyParser  = require("body-parser")
     mongoose    = require("mongoose"),
     express     = require("express"),
     config      = require("./config.js");
-    purgeDB     = require("./seeds.js");
+    //purgeDB     = require("./seeds.js");
 
 var postsRoutes = require("./routes/posts"),
     indexRoutes = require("./routes/index");
