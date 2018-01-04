@@ -36,7 +36,6 @@ $(document).ready(function(){
     var reachedAll = false;
     function loadMore(){   
         var lastId = getLastId();
-        console.log(lastId);
         if(!reachedAll){
             $(".loader").show();
         }
