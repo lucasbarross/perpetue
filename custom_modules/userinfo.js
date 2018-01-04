@@ -5,7 +5,8 @@ var hashids = new Hashids('Perpetue');
 var genres = ["male", "female"];
 
 function generateUser(ip){
-    ip.replace(".", "");
+    ip = ip.replace(".", "");
+    ip = ip.replace(":", "");
     console.log(ip);
     let ipHash = hashids.encode(parseInt(ip));
     console.log("After hashid, in user module: " + ipHash);
