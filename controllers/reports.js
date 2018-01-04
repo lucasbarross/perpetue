@@ -9,11 +9,16 @@ var hashids = new Hashids('Perpetue');
 
 module.exports = {
     reportPost: function(req, res){
-                    grecaptcha.valid_captcha(req.body['g-recaptcha-response'], req.connection.remoteAddress)
-                    .then(() => { return Report.find({ip: req.connection.remoteAddress, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec() })
+                    var ipv = req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress ||
+                    req.socket.remoteAddress ||
+                    req.connection.socket.remoteAddress;
+
+                    grecaptcha.valid_captcha(req.body['g-recaptcha-response'], ipv)
+                    .then(() => { return Report.find({ip: ipv, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec() })
                     .then((report) => {
                         if(!report.length){
-                            return Report.create({ip: req.connection.remoteAddress, post_id: hashids.decodeHex(req.params.id)});
+                            return Report.create({ip: ipv, post_id: hashids.decodeHex(req.params.id)});
                         } else {
                             throw new Error("You've already reported this post.");
                         }
@@ -27,11 +32,16 @@ module.exports = {
                     .catch((err) => res.json({"responseCode": -5, "responseDesc": err.message}));
                 },
     reportComment: function(req, res){
-                    grecaptcha.valid_captcha(req.body['g-recaptcha-response'], req.connection.remoteAddress)
-                    .then(() => { return Report.find({ip: req.connection.remoteAddress, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec()})
+                    var ipv = req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress ||
+                    req.socket.remoteAddress ||
+                    req.connection.socket.remoteAddress;
+
+                    grecaptcha.valid_captcha(req.body['g-recaptcha-response'], ipv)
+                    .then(() => { return Report.find({ip: ipv, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec()})
                     .then((report) => {
                         if(!report.length){
-                            return Report.create({ip: req.connection.remoteAddress, post_id: hashids.decodeHex(req.params.id)});
+                            return Report.create({ip: ipv, post_id: hashids.decodeHex(req.params.id)});
                         } else {
                             throw new Error("You've already reported this comment.");
                         }

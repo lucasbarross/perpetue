@@ -68,6 +68,8 @@ module.exports = {
                     req.socket.remoteAddress ||
                     req.connection.socket.remoteAddress;
 
+                    console.log(ip);
+
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})
                     }
