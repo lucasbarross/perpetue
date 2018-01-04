@@ -5,8 +5,10 @@ var hashids = new Hashids('Perpetue');
 var genres = ["male", "female"];
 
 function generateUser(ip){
+    console.log("Before, in user module: " + ip);
     let ipHash = hashids.encode(parseInt(ip));
-    let genre = genres[parseInt(ip[4])%2];
+    console.log("After hashid, in user module: " + ipHash);
+    let genre = genres[parseInt(ip[8])%2];
     let name = randomName({gender: genre, seed: ipHash});
     return {
         name: name,

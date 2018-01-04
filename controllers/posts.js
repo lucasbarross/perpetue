@@ -68,7 +68,7 @@ module.exports = {
                     req.socket.remoteAddress ||
                     req.connection.socket.remoteAddress;
 
-                    console.log(ip);
+                    console.log("Before all: " + ip);
 
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})
@@ -82,6 +82,7 @@ module.exports = {
                     .then(function insertPost(){
                             let user = userinfo.generateUser(ip);
                             let message = req.body.message;
+                            console.log("After user module: " + user.ipHash);
                             let avatar = "http://eightbitavatar.herokuapp.com/?id="+user.ipHash+"&s="+user.genre+"&size=100";
                             let newPost = { 
                                             avatar: avatar,
