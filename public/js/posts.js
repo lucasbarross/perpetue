@@ -65,4 +65,9 @@ $(document).ready(function(){
     function getLastId(){
         return $(".posts").children().last().data('id');
     }
+
+
+    $.ajax({
+        url: '/posts/'
+    })
 })
