@@ -6,6 +6,9 @@ router.route("/")
       .get(controller.getAllPosts)
       .post(controller.createPost);
 
+router.route("/refresh")
+      .get(controller.refreshPosts);
+      
 router.route("/load")
       .get(controller.getPostsFrom);
 

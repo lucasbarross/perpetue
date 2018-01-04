@@ -40,6 +40,7 @@
                 </form>
                 <div id="response"></div>
             </div>
+            <i id="refresh-button" class="fa fa-refresh" aria-hidden="true"></i>
         </div>
         <hr>
         <form id="reporter" style="display:none;" action="" method="POST">
@@ -60,6 +61,7 @@
                             <p style="display:none;" id="<%=post['hashid']%>msg"><%= post["body"] %> </p>
                         <% } %>
                         <div class="date"> <%= post["date"].getDate() + "-" + (post["date"].getMonth() + 1) + "-" + post["date"].getFullYear(); %></div>
+                        <div class="comment-counter"> <%= post["comments"].length %> comment(s)</div>
                         <% if(!post['reported']) { %>
                             <button data-action="/posts/<%= post['hashid'] %>/report" data-id="<%= post['hashid'] %>" id="report_btn" class="report report_btn">
                                 <i class="fa fa-exclamation" aria-hidden="true"></i>

@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var grecaptcha = require("../custom_modules/grecaptcha");
 var config = require("../config.js");
 var userinfo = require("../custom_modules/userinfo");
+var ipfetcher = require("../custom_modules/ipfetcher");
 var Hashids = require("hashids");
 var hashids = new Hashids('Perpetue');
 
@@ -29,6 +30,8 @@ function createComment(ip, message){
 
 module.exports = {
     getComments: function (req,res){
+                    var ipv = ipfetcher.getIp(req);
+
                     Post.findById(hashids.decodeHex(req.params.id)).populate("comments")
                     .exec()
                     .then((post) => {
@@ -36,10 +39,10 @@ module.exports = {
                         post.comments = hash(post.comments);
                         
                         var queries = post.comments.map((comment) => {
-                            return Report.findOne({ip: req.connection.remoteAddress, post_id: comment._id});
+                            return Report.findOne({ip: ipv, post_id: comment._id});
                         });
                         
-                        queries.push(Report.findOne({ip: req.connection.remoteAddress, post_id: post._id}));
+                        queries.push(Report.findOne({ip: ipv, post_id: post._id}));
                         
                         Promise.all(queries)
                         .then((results) => {
@@ -59,10 +62,7 @@ module.exports = {
                 },
     createComment: function (req,res){
                     let captchaResponse = req.body['g-recaptcha-response'];
-                    let ip = req.headers['x-forwarded-for'] ||
-                    req.connection.remoteAddress ||
-                    req.socket.remoteAddress ||
-                    req.connection.socket.remoteAddress;
+                    var ip = ipfetcher.getIp(req);
 
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})

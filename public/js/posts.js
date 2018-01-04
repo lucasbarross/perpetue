@@ -36,7 +36,7 @@ $(document).ready(function(){
     var reachedAll = false;
     function loadMore(){   
         var lastId = getLastId();
-
+        console.log(lastId);
         if(!reachedAll){
             $(".loader").show();
         }
@@ -66,8 +66,38 @@ $(document).ready(function(){
         return $(".posts").children().last().data('id');
     }
 
+    $('#refresh-button').on('click', function(e){
+        $(this).animate({  borderSpacing: -360 }, {
+            step: function(now,fx) {
+              $(this).css('-webkit-transform','rotate('+now+'deg)'); 
+              $(this).css('-moz-transform','rotate('+now+'deg)');
+              $(this).css('transform','rotate('+now+'deg)');
+            },
+            duration:'slow'
+        },'linear');
+        
+        
+        canLoad = false;  
+        var container = $(".posts");
+        container.html("");
+        $(".loader").show();
 
-    $.ajax({
-        url: '/posts/'
+        $.ajax({
+            url: '/posts/refresh',
+            type: 'GET',
+            success: function(data){
+               $(".loader").hide();
+                if(data.responseCode != 0){
+                    console.log(data)
+                } else if(data.posts.length > 0){
+                    data.posts.forEach(function(post){
+                        var message = $(feedback.messageModel(post, "post", data.maxReports));
+                        container.append(message)
+                    })
+                    canLoad = true;   
+                    reachedAll = false;
+                }
+            }
+        })
     })
 })

@@ -13,6 +13,7 @@ body, html{
 }
 
 .container{
+    position: relative;
     display: flex;
     margin: auto;
     align-items: center;
@@ -62,6 +63,18 @@ hr{
     font-size: 14px;
 }
 
+#refresh-button{
+    position: absolute;
+    right: 25%;
+    bottom: 2px;
+    font-size: 30px;
+    color: #29d783;
+}
+
+#refresh-button:hover{
+    cursor: pointer;
+}
+
 #returner{
     display: none;
     position: fixed;
@@ -85,7 +98,17 @@ hr{
     margin-top: 30px;
     margin-bottom: 10px;
 }
-
+.comment-counter{
+    position: absolute;
+    bottom: 2px;
+    right: 55px;
+    font-size: 11px;
+    color: #29d783;
+    display: none;
+}
+.post:hover .comment-counter{
+    display: block;
+}
 .grecaptcha-badge {
     margin-top: 10px;
     margin-right: 20px;

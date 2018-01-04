@@ -3,16 +3,14 @@ var Comment = require("../models/comment.js");
 var Post = require("../models/post.js");
 var mongoose =  require('mongoose');
 var grecaptcha = require("../custom_modules/grecaptcha.js");
+var ipfetcher = require("../custom_modules/ipfetcher");
 
 var Hashids = require("hashids");
 var hashids = new Hashids('Perpetue');
 
 module.exports = {
     reportPost: function(req, res){
-                    var ipv = req.headers['x-forwarded-for'] ||
-                    req.connection.remoteAddress ||
-                    req.socket.remoteAddress ||
-                    req.connection.socket.remoteAddress;
+                    var ipv = ipfetcher.getIp(req);
 
                     grecaptcha.valid_captcha(req.body['g-recaptcha-response'], ipv)
                     .then(() => { return Report.find({ip: ipv, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec() })
@@ -32,10 +30,7 @@ module.exports = {
                     .catch((err) => res.json({"responseCode": -5, "responseDesc": err.message}));
                 },
     reportComment: function(req, res){
-                    var ipv = req.headers['x-forwarded-for'] ||
-                    req.connection.remoteAddress ||
-                    req.socket.remoteAddress ||
-                    req.connection.socket.remoteAddress;
+                    var ipv = ipfetcher.getIp(req);
 
                     grecaptcha.valid_captcha(req.body['g-recaptcha-response'], ipv)
                     .then(() => { return Report.find({ip: ipv, post_id: hashids.decodeHex(req.params.id)}).limit(1).exec()})

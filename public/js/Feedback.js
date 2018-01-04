@@ -10,7 +10,12 @@ function Feedback(){
     }
 
     Feedback.prototype.messageModel = function(msg, type, maxReports){
-        var date = new Date();
+        var date;
+        if(msg["date"]){
+            date = new Date(msg["date"]);
+        } else {
+            date = new Date();
+        }
         var today =  date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear();
         var action = type == "post" ? '"/posts/'+ msg["hashid"] + '/report"' : '"/posts/'+ msg["hashid"] + '/comment/report"';
         var verb = type == "post" ? "says:" : "responds:";
@@ -36,6 +41,13 @@ function Feedback(){
 
         message+= '<div class="date">' + today + '</div>';
         
+        if(type == 'post'){
+            if(msg["comments"])
+                message+='<div class="comment-counter">' + msg["comments"].length + ' comment(s)</div>'
+            else
+                message+='<div class="comment-counter"> 0 comment(s)</div>'
+        }
+
         if(!msg["reported"] || msg["reported"] == undefined){
             message+='<button'+ 
                         ' data-action='+action+

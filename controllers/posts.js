@@ -4,6 +4,7 @@ var mongoose =  require('mongoose');
 var bodyParser = require("body-parser");
 var grecaptcha = require("../custom_modules/grecaptcha.js");
 var userinfo = require("../custom_modules/userinfo");
+var ipfetcher = require("../custom_modules/ipfetcher");
 var config = require("../config.js")
 
 var Hashids = require("hashids");
@@ -18,12 +19,14 @@ function hash(posts){
 
 module.exports = {
     getAllPosts: function (req,res){
+                    var ipv = ipfetcher.getIp(req);
+
                     Post.find({}).sort({date: -1}).limit(6)
                     .exec()
                     .then((posts) => {
                         posts = hash(posts);
                         Promise.all(posts.map((post) => {
-                            return Report.findOne({ip: req.connection.remoteAddress, post_id: post._id});
+                            return Report.findOne({ip: ipv, post_id: post._id});
                         }))
                         .then((results) => {
                             for(i = 0; i < results.length; i++){
@@ -37,6 +40,8 @@ module.exports = {
                     .catch((err) => res.json({message: err.message}))
                 },
     getPostsFrom: function (req, res){ 
+                    var ipv = ipfetcher.getIp(req);
+
                     let from = hashids.decodeHex(req.query.from);
                     Post.find({_id: {$lt: from}}).sort({date: -1}).limit(6)
                     .exec()
@@ -48,7 +53,7 @@ module.exports = {
                             postsConverted.push(s);
                         })
                         Promise.all(postsConverted.map((post) => {
-                            return Report.findOne({ip: req.connection.remoteAddress, post_id: post._id});
+                            return Report.findOne({ip: ipv, post_id: post._id});
                         }))
                         .then((results) => {
                             for(i = 0; i < results.length; i++){
@@ -61,13 +66,36 @@ module.exports = {
                     })
                     .catch((err) => console.log(err.message));
                 },
+    refreshPosts: function(req, res){
+                var ipv = ipfetcher.getIp(req);
+
+                Post.find({}).sort({date: -1}).limit(6)
+                .exec()
+                .then((posts) => {
+                    var postsConverted = [];
+                    posts.forEach((post)=>{
+                        var s = post.toObject();
+                        s['hashid'] = hashids.encodeHex(post._id);
+                        postsConverted.push(s);
+                    })
+                    Promise.all(postsConverted.map((post) => {
+                        return Report.findOne({ip: ipv, post_id: post._id});
+                    }))
+                    .then((results) => {
+                        for(i = 0; i < results.length; i++){
+                            if(results[i] != undefined){
+                                postsConverted[i].reported = true;
+                            }
+                        }
+                        res.json({responseCode: 0, posts: postsConverted, maxReports: config.maxReports});
+                    })
+                })
+                .catch((err) => res.json({responseCode: -1, message: err.message}))
+    },
     createPost: function (req,res){
                     let captchaResponse = req.body['g-recaptcha-response'];
-                    let ip = req.headers['x-forwarded-for'] ||
-                    req.connection.remoteAddress ||
-                    req.socket.remoteAddress ||
-                    req.connection.socket.remoteAddress;
-
+                    var ip = ipfetcher.getIp(req);
+                    
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
                         return res.json({"responseCode": -2, "responseDesc": "Write your message before sending!"})
                     }
