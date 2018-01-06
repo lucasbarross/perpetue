@@ -40,6 +40,16 @@
             <button type="submit" id="captcha_report" style="display:none;"></button>
         </form>
         <div class="container posts">
+            <script type="text/javascript">
+                ( function() {
+                    if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+                    var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":728,"height":90,"sid":"Chitika Default"};
+                    var placement_id = window.CHITIKA.units.length;
+                    window.CHITIKA.units.push(unit);
+                    document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+                }());
+            </script>
+            <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
             <% posts.forEach(function(post){ %>
             <a href="/posts/<%=post['hashid']%>/comments" data-id="<%= post['hashid'] %>" class="post">
                     <div class="avatar">
@@ -70,24 +80,4 @@
         <i id="returner" class="fa fa-arrow-up" aria-hidden="true"></i>
 
         <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
-        <script type="text/javascript">
-            ( function() {
-                if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
-                var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":728,"height":90,"sid":"Chitika Default"};
-                var placement_id = window.CHITIKA.units.length;
-                window.CHITIKA.units.push(unit);
-                document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
-            }());
-            </script>
-        <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
-        <script type="text/javascript">
-            ( function() {
-                if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
-                var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":320,"height":50,"sid":"Chitika Default"};
-                var placement_id = window.CHITIKA.units.length;
-                window.CHITIKA.units.push(unit);
-                document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
-            }());
-            </script>
-        <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
 <% include ./partials/footer %>
