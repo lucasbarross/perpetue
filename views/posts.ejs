@@ -4,7 +4,6 @@
         <% include ./partials/header %>
         <title>Perpetue - Leave your message to the world.</title>
         <link rel="stylesheet" href="/css/posts.css">
-        <meta name="propeller" content="a1b91fc984d0d24862fd4fe928a7dab0">
         <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script>
         <script src="/js/reporter.js"></script>
@@ -13,14 +12,6 @@
         <script src="/js/returner.js"></script>
         <script src="/js/limiter.js"></script>
         <script src="/js/toggle.js"></script>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-7559020056946564",
-            enable_page_level_ads: true
-        });
-        </script>
-        
     </head>
 
     <body>
@@ -79,5 +70,24 @@
         <i id="returner" class="fa fa-arrow-up" aria-hidden="true"></i>
 
         <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
-        <script type="text/javascript"> var infolinks_pid = 3062082; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+        <script type="text/javascript">
+            ( function() {
+                if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+                var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":728,"height":90,"sid":"Chitika Default"};
+                var placement_id = window.CHITIKA.units.length;
+                window.CHITIKA.units.push(unit);
+                document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+            }());
+            </script>
+        <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+        <script type="text/javascript">
+            ( function() {
+                if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+                var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":320,"height":50,"sid":"Chitika Default"};
+                var placement_id = window.CHITIKA.units.length;
+                window.CHITIKA.units.push(unit);
+                document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+            }());
+            </script>
+        <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
 <% include ./partials/footer %>
