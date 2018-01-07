@@ -39,8 +39,8 @@
         <form id="reporter" style="display:none;" action="" method="POST">
             <button type="submit" id="captcha_report" style="display:none;"></button>
         </form>
-        <div class="container posts">
-            <script type="text/javascript">
+        <div class="container">
+        <script type="text/javascript">
                 ( function() {
                     if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
                     var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":728,"height":90,"sid":"Chitika Default"};
@@ -49,9 +49,18 @@
                     document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
                 }());
             </script>
-            <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
-            <script type="text/javascript" src="//ylx-1.com/bnr.php?section=General&pub=266575&format=728x90&ga=g"></script>
-            <noscript><a href="https://yllix.com/publishers/266575" target="_blank"><img src="//ylx-aff.advertica-cdn.com/pub/728x90.png" style="border:none;margin:0;padding:0;vertical-align:baseline;" /></a></noscript>
+        <script type="text/javascript">
+        ( function() {
+            if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+            var unit = {"calltype":"async[2]","publisher":"lucasbarross","width":320,"height":50,"sid":"Chitika Default"};
+            var placement_id = window.CHITIKA.units.length;
+            window.CHITIKA.units.push(unit);
+            document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+        }());
+        </script>
+        <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+        </div>
+        <div class="container posts">
             <% posts.forEach(function(post){ %>
             <a href="/posts/<%=post['hashid']%>/comments" data-id="<%= post['hashid'] %>" class="post">
                     <div class="avatar">
