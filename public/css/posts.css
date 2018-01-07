@@ -190,7 +190,7 @@ hr{
 iframe{
     margin-bottom: 10px;
 }
-@media screen and (min-width: 728px) {
+@media screen and (max-width: 728px) {
     iframe{
         width: 300px;
     }
