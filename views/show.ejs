@@ -8,10 +8,10 @@
 
         <meta property="og:title" content="<%= post['author'] %>'s message">
         <meta property="og:site_name" content="Perpetue">
-        <meta property="og:description" content="Leave your message to the world.">
+        <meta property="og:description" content="<%= post['body'] %>">
         <meta property="og:image" content="/img/og-thumbnail.png">
         <meta property="og:type" content="website">
-        
+
         <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script> 
         <script src="/js/reporter.js"></script>
