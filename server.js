@@ -22,6 +22,7 @@ app.use(indexRoutes);
 app.use("/posts", postsRoutes);
 app.use("/posts", commentsRoutes);
 app.use("/posts", reportsRoutes);
+//purgeDB();
 
 app.listen(process.env.PORT || 1000, function(){
     console.log("connected");

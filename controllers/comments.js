@@ -18,9 +18,9 @@ function hash(comments){
 }
 
 function createComment(ip, message){
-    let user = userinfo.generateUser(ip);
-    let avatar = "http://eightbitavatar.herokuapp.com/?id="+user.ipHash+"&s="+user.genre+"&size=100";
-    let newcomment = { 
+    var user = userinfo.generateUser(ip);
+    var avatar = "http://eightbitavatar.herokuapp.com/?id="+user.ipHash+"&s="+user.genre+"&size=100";
+    var newcomment = { 
                     avatar: avatar,
                     author: user.name,
                     body: message,
@@ -61,7 +61,7 @@ module.exports = {
                     .catch((err) => res.status(404).send(err.message));    
                 },
     createComment: function (req,res){
-                    let captchaResponse = req.body['g-recaptcha-response'];
+                    var captchaResponse = req.body['g-recaptcha-response'];
                     var ip = ipfetcher.getIp(req);
 
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){

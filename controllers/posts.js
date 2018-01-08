@@ -42,7 +42,7 @@ module.exports = {
     getPostsFrom: function (req, res){ 
                     var ipv = ipfetcher.getIp(req);
 
-                    let from = hashids.decodeHex(req.query.from);
+                    var from = hashids.decodeHex(req.query.from);
                     Post.find({_id: {$lt: from}}).sort({date: -1}).limit(6)
                     .exec()
                     .then((posts) => {
@@ -93,7 +93,7 @@ module.exports = {
                 .catch((err) => res.json({responseCode: -1, message: err.message}))
     },
     createPost: function (req,res){
-                    let captchaResponse = req.body['g-recaptcha-response'];
+                    var captchaResponse = req.body['g-recaptcha-response'];
                     var ip = ipfetcher.getIp(req);
                     
                     if(req.body.message == '' || req.body.message == undefined || req.body.message == null){
@@ -106,10 +106,10 @@ module.exports = {
                     
                     grecaptcha.valid_captcha(captchaResponse, ip)
                     .then(function insertPost(){
-                            let user = userinfo.generateUser(ip);
-                            let message = req.body.message;
-                            let avatar = "http://eightbitavatar.herokuapp.com/?id="+user.ipHash+"&s="+user.genre+"&size=100";
-                            let newPost = { 
+                            var user = userinfo.generateUser(ip);
+                            var message = req.body.message;
+                            var avatar = "http://eightbitavatar.herokuapp.com/?id="+user.ipHash+"&s="+user.genre+"&size=100";
+                            var newPost = { 
                                             avatar: avatar,
                                             author: user.name,
                                             body: message,
