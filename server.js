@@ -24,6 +24,9 @@ app.use("/posts", commentsRoutes);
 app.use("/posts", reportsRoutes);
 //purgeDB();
 
-app.listen(process.env.PORT || 1000, function(){
+var server_port = process.env.OPENSHIFT_NODE4_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODE4_IP || '127.0.0.1'
+
+app.listen(server_port, server_ip_address, function(){
     console.log("connected");
 });
